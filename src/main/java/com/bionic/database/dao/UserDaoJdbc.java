@@ -18,34 +18,33 @@ public class UserDaoJdbc implements UserDao {
 
     @Override
     public List<User> findAll() {
-        ResultSet res = null;
+        ResultSet rs = null;
+        Statement stmt = null;
+        Connection conn = null;
+        
         List<User> resultList = new ArrayList<>();
 
         try {
-            Connection conn = ConnectionManager.getConnection();
-            Statement st = conn.createStatement();
-            res = st.executeQuery("SELECT * FROM USERS");
-            while (res.next()) {
+            conn = ConnectionManager.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM USERS");
+            while (rs.next()) {
                 User u = new User();
-                u.setId(res.getInt("ID"));
-                u.setName(res.getString("NAME"));
-                u.setEmail(res.getString("EMAIL"));
-                u.setPassword(res.getString("PASSWORD"));
+                u.setId(rs.getInt("ID"));
+                u.setName(rs.getString("NAME"));
+                u.setEmail(rs.getString("EMAIL"));
+                u.setPassword(rs.getString("PASSWORD"));
                 resultList.add(u);
             }
 
         } catch (SQLException ex) {
-            try {
-                res.close();
-            } catch (SQLException ex1) {
-                throw new RuntimeException("Can not close RS", ex1);
-            }
+            //error
+            throw new RuntimeException("Database exception", ex);
+            
         } finally {
-            try {
-                res.close();
-            } catch (SQLException ex1) {
-                throw new RuntimeException("Can not close RS", ex1);
-            }
+            try { if (rs != null) rs.close(); } catch (Exception e) {};
+            try { if (stmt != null) stmt.close(); } catch (Exception e) {};
+            try { if (conn != null) conn.close(); } catch (Exception e) {};
         }
 
         return resultList;
@@ -53,35 +52,34 @@ public class UserDaoJdbc implements UserDao {
 
     @Override
     public User findById(int id) {
-        ResultSet res = null;
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        Connection conn = null;
+        
         User selectedUser = null;
 
         try {
-            Connection conn = ConnectionManager.getConnection();
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM USERS WHERE ID=?");
-            st.setInt(1, id);
-            res = st.executeQuery();
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("SELECT * FROM USERS WHERE ID=?");
+            stmt.setInt(1, id);
+            rs = stmt.executeQuery();
 
-            if (res.next()) {
+            if (rs.next()) {
                 selectedUser = new User();
-                selectedUser.setId(res.getInt("ID"));
-                selectedUser.setName(res.getString("NAME"));
-                selectedUser.setEmail(res.getString("EMAIL"));
-                selectedUser.setPassword(res.getString("PASSWORD"));
+                selectedUser.setId(rs.getInt("ID"));
+                selectedUser.setName(rs.getString("NAME"));
+                selectedUser.setEmail(rs.getString("EMAIL"));
+                selectedUser.setPassword(rs.getString("PASSWORD"));
             }
 
         } catch (SQLException ex) {
-            try {
-                res.close();
-            } catch (SQLException ex1) {
-                throw new RuntimeException("Can not close RS", ex1);
-            }
+            //error
+            throw new RuntimeException("Database exception", ex);
+            
         } finally {
-            try {
-                res.close();
-            } catch (SQLException ex1) {
-                throw new RuntimeException("Can not close RS", ex1);
-            }
+            try { if (rs != null) rs.close(); } catch (Exception e) {};
+            try { if (stmt != null) stmt.close(); } catch (Exception e) {};
+            try { if (conn != null) conn.close(); } catch (Exception e) {};
         }
 
         return selectedUser;
@@ -89,28 +87,27 @@ public class UserDaoJdbc implements UserDao {
 
     @Override
     public int deleteById(int id) {
-        ResultSet res = null;
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        Connection conn = null;
+        
         int rowsChanged = 0;
 
         try {
-            Connection conn = ConnectionManager.getConnection();
-            PreparedStatement st = conn.prepareStatement("DELETE FROM USERS WHERE ID=?;");
-            st.setInt(1, id);
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("DELETE FROM USERS WHERE ID=?;");
+            stmt.setInt(1, id);
 
-            rowsChanged = st.executeUpdate();
+            rowsChanged = stmt.executeUpdate();
 
         } catch (SQLException ex) {
-            try {
-                res.close();
-            } catch (SQLException ex1) {
-                throw new RuntimeException("Can not close RS", ex1);
-            }
+            //error
+            throw new RuntimeException("Database exception", ex);
+            
         } finally {
-            try {
-                res.close();
-            } catch (SQLException ex1) {
-                throw new RuntimeException("Can not close RS", ex1);
-            }
+            try { if (rs != null) rs.close(); } catch (Exception e) {};
+            try { if (stmt != null) stmt.close(); } catch (Exception e) {};
+            try { if (conn != null) conn.close(); } catch (Exception e) {};
         }
 
         return rowsChanged;
@@ -119,31 +116,31 @@ public class UserDaoJdbc implements UserDao {
     @Override
     public int persist(User u) {
 
-        ResultSet res = null;
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        Connection conn = null;
+        
         int rowsChanged = 0;
 
         try {
-            Connection conn = ConnectionManager.getConnection();
-            PreparedStatement st = conn.prepareStatement("INSERT INTO USERS(ID,NAME,EMAIL,PASSWORD) VALUES (?,?,?,?);");
-            st.setInt(1, u.getId());
-            st.setString(2, u.getName());
-            st.setString(3, u.getEmail());
-            st.setString(4, u.getPassword());
-            rowsChanged = st.executeUpdate();
+            conn = ConnectionManager.getConnection();
+            stmt = conn.prepareStatement("INSERT INTO USERS(ID,NAME,EMAIL,PASSWORD) VALUES (?,?,?,?);");
+            stmt.setInt(1, u.getId());
+            stmt.setString(2, u.getName());
+            stmt.setString(3, u.getEmail());
+            stmt.setString(4, u.getPassword());
+            rowsChanged = stmt.executeUpdate();
 
         } catch (SQLException ex) {
-            try {
-                res.close();
-            } catch (SQLException ex1) {
-                throw new RuntimeException("Can not close RS", ex1);
-            }
+            //error
+            throw new RuntimeException("Database exception", ex);
+            
         } finally {
-            try {
-                res.close();
-            } catch (SQLException ex1) {
-                throw new RuntimeException("Can not close RS", ex1);
-            }
+            try { if (rs != null) rs.close(); } catch (Exception e) {};
+            try { if (stmt != null) stmt.close(); } catch (Exception e) {};
+            try { if (conn != null) conn.close(); } catch (Exception e) {};
         }
+
 
         return rowsChanged;
     }
