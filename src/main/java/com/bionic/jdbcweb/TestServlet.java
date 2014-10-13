@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.bionic.jdbcweb;
 
-import com.bionic.database.ConnectionManager;
+import com.bionic.database.dao.DaoFactory;
 import com.bionic.database.dao.UserDao;
 import com.bionic.database.dao.UserDaoJdbc;
 import com.bionic.database.entities.User;
@@ -38,7 +33,7 @@ public class TestServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        UserDao dao = new UserDaoJdbc();
+        UserDao dao = DaoFactory.getDefaultDAOFactory().getUserDao();
         
         List<User> users = dao.findAll();
         
