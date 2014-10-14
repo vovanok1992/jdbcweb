@@ -5,6 +5,64 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
-        <h1>Hello World!</h1>
+        
+        <style>            
+            .line{
+                width: 100%;
+            } 
+            
+            #container{
+                margin: 0 auto;
+                border: 1px solid black;
+                text-align: center;
+                width: 300px;
+                padding: 10px;
+            }
+        </style>    
+        
+        <form action="NewUser" method="POST">
+            <div id="container">
+             
+                <table style="margin: 0 auto;">
+                    <tr>
+                        <td>
+                           Id: 
+                        </td>
+                        <td>
+                            <input type="text" name="id"/>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                           Name:
+                        </td>
+                        <td>
+                            <input type="text" name="uname"/>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                           Password:
+                        </td>
+                        <td>
+                            <input type="text" name="pass"/>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                           Email:
+                        </td>
+                        <td>
+                            <input type="text" name="email"/>
+                        </td>
+                    </tr>   
+                </table>
+
+                <input type="submit" value="Submit" style="width:80%" />
+            </div>          
+        </form>
     </body>
 </html>
